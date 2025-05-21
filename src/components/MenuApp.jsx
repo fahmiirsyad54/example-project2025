@@ -1,5 +1,6 @@
 import React from 'react';
 import MenuList from './MenuList';
+import MenuInput from './MenuInput';
 import { getData } from '../utils/data';
 
 class MenuApp extends React.Component {
@@ -9,8 +10,8 @@ class MenuApp extends React.Component {
       menus: getData()
     }
   
-
     this.onDeleteHandler = this.onDeleteHandler.bind(this);
+    this.onAddMenuHandler = this.onAddMenuHandler.bind(this);
   }
 
   onDeleteHandler(id) {
@@ -18,10 +19,32 @@ class MenuApp extends React.Component {
     this.setState({ menus });
   }
 
+  onAddMenuHandler({ name, price, imageUrl }) {
+   this.setState((prevState) => {
+     return {
+       menus: [
+         ...prevState.menus,
+         {
+           id: +new Date(),
+           name,
+           price,
+           imageUrl,
+         }
+       ]
+     }
+   });
+ }
+
   render() {
      return (
       <div className="menu-app">
-        <h1>Daftar Menu</h1>
+        <h1>Warung Padang</h1>
+        <h2>Tambah Menu</h2>
+        <MenuInput 
+          addMenu = {this.onAddMenuHandler}
+        />
+
+        <h2>Daftar Menu</h2>
         <MenuList
             menus = {this.state.menus}
             onDelete={this.onDeleteHandler}
@@ -29,6 +52,8 @@ class MenuApp extends React.Component {
       </div>
     );
   }
+
+
 }
 
 export default MenuApp;
